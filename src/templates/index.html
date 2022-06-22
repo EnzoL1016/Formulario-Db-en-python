@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Buona Vita Nutrición</title>
+    <link rel="shortcut icon" href="{{url_for('static', filename='favicon.ico')}}" type="image/x-icon" />
+    <link rel="stylesheet"  href="{{url_for('static', filename='css/reset.css')}}" />
+    <link rel="stylesheet"  href="{{url_for('static', filename= 'css/main.css')}}" />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1 class="title">Buona Vita Nutrición</h1>
+      </div>
+    </header>
+    <main>
+      <section class="container">
+        <h2>Mis pacientes</h2>
+        <label for="filtrar-tabla">Buscar:</label>
+        <input
+          type="text"
+          name="filtro"
+          id="filtrar-tabla"
+          placeholder="Ingrese un nombre"
+        />
+        <table>
+          <thead>
+            <tr class="thead">
+              <th>Nombre</th>
+              <th>Peso(kg)</th>
+              <th>Altura(m)</th>
+              <th>Grasa Corporal(%)</th>
+              <th>IMC</th>
+              <th>Accion</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-pacientes">
+            {% for patient in patients %}            
+            <tr class="paciente">
+              <td class="info-nombre">{{patient.1}}</td>
+              <td class="info-peso">{{patient.2}}</td>
+              <td class="info-altura">{{patient.3}}</td>
+              <td class="info-gordura">{{patient.4}}</td>
+              <td class="info-imc">{{patient.5}}</td>
+              <td>
+                <a href="/delete-patient/{{patient.0}}" class="deleteButton">Eliminar</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <!-- <span id="error-ajax" class="invisible">
+          Error al importar los pacientes
+        </span> -->
+        <button id="buscar-paciente" class="boton bto-principal">
+          Importar pacientes
+        </button>
+      </section>
+      <section class="container">
+        <h2 id="titulo-form">Adicionar nuevo paciente</h2>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <p id="mensajes-errores">{{ message }}</p>
+        {% endfor %} 
+        {% endif %}
+        {% endwith%}
+        <form id="form-adicionar" action="/add-patient" method="POST">
+          <div class="grupo">
+            <label for="nombre">Nombre:</label>
+            <input
+              id="nombre"
+              name="nombre"
+              type="text"
+              placeholder="nombre"
+              class="campo"
+            />
+          </div>
+          <div class="grupo">
+            <label for="peso">Peso:</label>
+            <input
+              id="peso"
+              name="peso"
+              type="text"
+              placeholder="peso"
+              class="campo campo-medio"
+            />
+          </div>
+          <div class="grupo">
+            <label for="altura">Altura:</label>
+            <input
+              id="altura"
+              name="altura"
+              type="text"
+              placeholder="altura"
+              class="campo campo-medio"
+            />
+          </div>
+          <div class="grupo">
+            <label for="grasa">% de Grasa:</label>
+            <input
+              id="gordura"
+              name="grasa"
+              type="text"
+              placeholder="% de grasa"
+              class="campo campo-medio"
+            />
+          </div>
+          <button id="adicionar-paciente" class="boton bto-principal">
+            Adicionar
+          </button>
+        </form>
+      </section>
+    </main>
+    <script src="{{url_for('static', filename= 'js/delete-patients.js')}}"></script>
+    <script src="{{url_for('static', filename= 'js/import-patients.js')}}"></script>
+    <script src="{{url_for('static', filename= 'js/filter.js')}}"></script>
+  </body>
+</html>
